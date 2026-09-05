@@ -44,7 +44,7 @@ E-Commerce-Portal/
 
 ### 🏠 Home & Products
 
-![Home and Products](screenshots/home-products.jpg)
+![Home and Products](screenshots/home-products.png)
 
 ### 🛟 Customer Care, Contact Us & About Us
 
