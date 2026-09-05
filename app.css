@@ -373,12 +373,3 @@ footer p {
         padding: 20px;
     }
 }
-
-Now your 3 files are consistent:
-
-E-Commerce-Portal/
-├── index.html
-├── app.css
-└── app.js
-
-Just open "index.html" and test Register → Login → Products → Wishlist → Orders → Reviews.
