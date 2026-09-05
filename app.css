@@ -1,798 +1,384 @@
-// ==========================================
-// E-COMMERCE PORTAL - app.js
-// ==========================================
+
+/* ==========================================
+   E-COMMERCE PORTAL - app.css
+   ========================================== */
 
 
-// ==========================================
-// PRODUCT DATA
-// ==========================================
+/* ================= GLOBAL ================= */
 
-const products = [
-    {
-        id: 1,
-        name: "T-Shirt",
-        price: 499
-    },
-    {
-        id: 2,
-        name: "Headphones",
-        price: 999
-    },
-    {
-        id: 3,
-        name: "Smart Watch",
-        price: 1999
-    },
-    {
-        id: 4,
-        name: "Shoes",
-        price: 1499
-    }
-];
+* {
+    box-sizing: border-box;
+}
 
+html {
+    scroll-behavior: smooth;
+}
 
-// ==========================================
-// ORDER DATA
-// ==========================================
-
-const orders = [
-    {
-        id: 101,
-        items: ["T-Shirt"],
-        status: "Delivered"
-    },
-    {
-        id: 102,
-        items: ["Headphones"],
-        status: "Pending"
-    }
-];
-
-
-// ==========================================
-// WISHLIST DATA
-// ==========================================
-
-let wishlist = JSON.parse(
-    localStorage.getItem("wishlist")
-) || [];
-
-
-// ==========================================
-// REVIEW DATA
-// ==========================================
-
-const reviews = [
-    {
-        prodId: 1,
-        user: "Kumar",
-        text: "Great quality product!",
-        rating: 5
-    }
-];
-
-
-// ==========================================
-// GET HTML ELEMENTS
-// ==========================================
-
-const productList = document.getElementById(
-    "productList"
-);
-
-const ordersList = document.getElementById(
-    "ordersList"
-);
-
-const wishlistElement = document.getElementById(
-    "wishlist"
-);
-
-const reviewsElement = document.getElementById(
-    "reviews"
-);
-
-
-// ==========================================
-// PRODUCT RENDERING
-// ==========================================
-
-function renderProducts() {
-
-    productList.innerHTML = "";
-
-    products.forEach(product => {
-
-        const productDiv =
-            document.createElement("div");
-
-        productDiv.className = "product";
-
-        productDiv.innerHTML = `
-            <h4>${product.name}</h4>
-
-            <p>₹${product.price}</p>
-
-            <button class="wishlist-button">
-                Add to Wishlist
-            </button>
-        `;
-
-        const wishlistButton =
-            productDiv.querySelector(
-                ".wishlist-button"
-            );
-
-        wishlistButton.addEventListener(
-            "click",
-            function () {
-
-                addToWishlist(product);
-
-            }
-        );
-
-        productList.appendChild(productDiv);
-
-    });
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f6f8;
+    color: #222;
+    line-height: 1.6;
 }
 
 
-// ==========================================
-// ADD PRODUCT TO WISHLIST
-// ==========================================
+/* ================= HEADER ================= */
 
-function addToWishlist(product) {
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
 
-    const alreadyAdded = wishlist.some(
-        item => item.id === product.id
-    );
-
-    if (alreadyAdded) {
-
-        alert(
-            "This product is already in your wishlist!"
-        );
-
-        return;
-    }
-
-    wishlist.push(product);
-
-    localStorage.setItem(
-        "wishlist",
-        JSON.stringify(wishlist)
-    );
-
-    renderWishlist();
-
-    alert(
-        product.name + " added to wishlist!"
-    );
+header h1 {
+    margin: 0 0 15px;
+    font-size: 30px;
 }
 
 
-// ==========================================
-// RENDER WISHLIST
-// ==========================================
+/* ================= NAVIGATION ================= */
 
-function renderWishlist() {
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
 
-    wishlistElement.innerHTML = "";
+nav a,
+nav button {
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 8px 10px;
+}
 
-    if (wishlist.length === 0) {
-
-        const emptyMessage =
-            document.createElement("li");
-
-        emptyMessage.textContent =
-            "Your wishlist is empty.";
-
-        wishlistElement.appendChild(
-            emptyMessage
-        );
-
-        return;
-    }
-
-    wishlist.forEach(product => {
-
-        const li =
-            document.createElement("li");
-
-        li.textContent =
-            product.name +
-            " - ₹" +
-            product.price;
-
-        wishlistElement.appendChild(li);
-
-    });
+nav a:hover,
+nav button:hover {
+    text-decoration: underline;
 }
 
 
-// ==========================================
-// RENDER ORDERS
-// ==========================================
+/* ================= MAIN SECTIONS ================= */
 
-function renderOrders() {
+section {
+    background-color: white;
+    padding: 25px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-    ordersList.innerHTML = "";
-
-    if (orders.length === 0) {
-
-        const emptyMessage =
-            document.createElement("li");
-
-        emptyMessage.textContent =
-            "No orders available.";
-
-        ordersList.appendChild(
-            emptyMessage
-        );
-
-        return;
-    }
-
-    orders.forEach(order => {
-
-        const li =
-            document.createElement("li");
-
-        li.textContent =
-            "#" +
-            order.id +
-            " - " +
-            order.items.join(", ") +
-            " (" +
-            order.status +
-            ")";
-
-        ordersList.appendChild(li);
-
-    });
+section h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
 
-// ==========================================
-// RENDER REVIEWS
-// ==========================================
+/* ================= HOME ================= */
 
-function renderReviews() {
+#home {
+    text-align: center;
+    padding: 40px 25px;
+}
 
-    reviewsElement.innerHTML = "";
+#home h2 {
+    font-size: 28px;
+}
 
-    if (reviews.length === 0) {
-
-        const emptyMessage =
-            document.createElement("li");
-
-        emptyMessage.textContent =
-            "No reviews available.";
-
-        reviewsElement.appendChild(
-            emptyMessage
-        );
-
-        return;
-    }
-
-    reviews.forEach(review => {
-
-        const product =
-            products.find(
-                p => p.id === review.prodId
-            );
-
-        const li =
-            document.createElement("li");
-
-        if (product) {
-
-            li.textContent =
-                review.user +
-                " on " +
-                product.name +
-                ': "' +
-                review.text +
-                '" (' +
-                review.rating +
-                "/5)";
-
-        } else {
-
-            li.textContent =
-                review.user +
-                ': "' +
-                review.text +
-                '" (' +
-                review.rating +
-                "/5)";
-
-        }
-
-        reviewsElement.appendChild(li);
-
-    });
+#home p {
+    font-size: 17px;
+    color: #555;
 }
 
 
-// ==========================================
-// MODAL ELEMENTS
-// ==========================================
-
-const modal =
-    document.getElementById("modal");
-
-const closeModal =
-    document.getElementById("closeModal");
-
-const loginButton =
-    document.getElementById("loginBtn");
-
-const registerButton =
-    document.getElementById("registerBtn");
-
-const loginFormBlock =
-    document.getElementById("loginForm");
-
-const registerFormBlock =
-    document.getElementById("registerForm");
-
-
-// ==========================================
-// OPEN LOGIN MODAL
-// ==========================================
-
-loginButton.addEventListener(
-    "click",
-    function () {
-
-        modal.classList.remove("hidden");
-
-        loginFormBlock.classList.remove(
-            "hidden"
-        );
-
-        registerFormBlock.classList.add(
-            "hidden"
-        );
-
-        document.getElementById(
-            "logMsg"
-        ).textContent = "";
-
-        document.getElementById(
-            "regMsg"
-        ).textContent = "";
-
-    }
-);
-
-
-// ==========================================
-// OPEN REGISTER MODAL
-// ==========================================
-
-registerButton.addEventListener(
-    "click",
-    function () {
-
-        modal.classList.remove("hidden");
-
-        registerFormBlock.classList.remove(
-            "hidden"
-        );
-
-        loginFormBlock.classList.add(
-            "hidden"
-        );
-
-        document.getElementById(
-            "logMsg"
-        ).textContent = "";
-
-        document.getElementById(
-            "regMsg"
-        ).textContent = "";
-
-    }
-);
-
-
-// ==========================================
-// CLOSE MODAL
-// ==========================================
-
-closeModal.addEventListener(
-    "click",
-    function () {
-
-        modal.classList.add("hidden");
-
-    }
-);
-
-
-// ==========================================
-// CLOSE MODAL WHEN CLICKING OUTSIDE
-// ==========================================
-
-window.addEventListener(
-    "click",
-    function (event) {
-
-        if (event.target === modal) {
-
-            modal.classList.add("hidden");
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// REGISTRATION
-// ==========================================
-
-const registerForm =
-    document.getElementById("regForm");
-
-const registerMessage =
-    document.getElementById("regMsg");
-
-
-registerForm.addEventListener(
-    "submit",
-    function (event) {
-
-        event.preventDefault();
-
-
-        // Get form values
-
-        const formData =
-            new FormData(registerForm);
-
-        const fullname =
-            formData.get("fullname").trim();
-
-        const email =
-            formData
-                .get("email")
-                .trim()
-                .toLowerCase();
-
-        const password =
-            formData.get("password").trim();
-
-        const phone =
-            formData.get("phone").trim();
-
-
-        // ==================================
-        // VALIDATE FULL NAME
-        // ==================================
-
-        if (fullname.length < 3) {
-
-            showMessage(
-                registerMessage,
-                "Full name must be at least 3 characters.",
-                true
-            );
-
-            return;
-        }
-
-
-        // ==================================
-        // VALIDATE EMAIL
-        // ==================================
-
-        const emailPattern =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(email)) {
-
-            showMessage(
-                registerMessage,
-                "Enter a valid email address.",
-                true
-            );
-
-            return;
-        }
-
-
-        // ==================================
-        // VALIDATE PASSWORD
-        // ==================================
-
-        if (password.length < 6) {
-
-            showMessage(
-                registerMessage,
-                "Password must be at least 6 characters.",
-                true
-            );
-
-            return;
-        }
-
-
-        // ==================================
-        // VALIDATE PHONE
-        // ==================================
-
-        const phonePattern =
-            /^[0-9]{10}$/;
-
-        if (!phonePattern.test(phone)) {
-
-            showMessage(
-                registerMessage,
-                "Phone number must be exactly 10 digits.",
-                true
-            );
-
-            return;
-        }
-
-
-        // ==================================
-        // GET USERS
-        // ==================================
-
-        let users = JSON.parse(
-            localStorage.getItem("users")
-        ) || [];
-
-
-        // ==================================
-        // CHECK EXISTING EMAIL
-        // ==================================
-
-        const existingUser =
-            users.find(
-                user => user.email === email
-            );
-
-        if (existingUser) {
-
-            showMessage(
-                registerMessage,
-                "This email is already registered.",
-                true
-            );
-
-            return;
-        }
-
-
-        // ==================================
-        // CREATE USER
-        // ==================================
-
-        const newUser = {
-
-            fullname: fullname,
-
-            email: email,
-
-            password: password,
-
-            phone: phone
-
-        };
-
-
-        // Add user
-
-        users.push(newUser);
-
-
-        // Save users
-
-        localStorage.setItem(
-            "users",
-            JSON.stringify(users)
-        );
-
-
-        // Success message
-
-        showMessage(
-            registerMessage,
-            "Registration successful!",
-            false
-        );
-
-
-        // Reset form
-
-        registerForm.reset();
-
-    }
-);
-
-
-// ==========================================
-// LOGIN
-// ==========================================
-
-const loginForm =
-    document.getElementById("logForm");
-
-const loginMessage =
-    document.getElementById("logMsg");
-
-
-loginForm.addEventListener(
-    "submit",
-    function (event) {
-
-        event.preventDefault();
-
-
-        // Get form values
-
-        const formData =
-            new FormData(loginForm);
-
-        const email =
-            formData
-                .get("email")
-                .trim()
-                .toLowerCase();
-
-        const password =
-            formData
-                .get("password")
-                .trim();
-
-
-        // ==================================
-        // GET USERS
-        // ==================================
-
-        const users = JSON.parse(
-            localStorage.getItem("users")
-        ) || [];
-
-
-        // ==================================
-        // FIND USER
-        // ==================================
-
-        const user =
-            users.find(
-                account =>
-                    account.email === email &&
-                    account.password === password
-            );
-
-
-        // ==================================
-        // LOGIN FAILED
-        // ==================================
-
-        if (!user) {
-
-            showMessage(
-                loginMessage,
-                "Invalid email or password.",
-                true
-            );
-
-            return;
-        }
-
-
-        // ==================================
-        // LOGIN SUCCESS
-        // ==================================
-
-        showMessage(
-            loginMessage,
-            "Welcome, " + user.fullname + "!",
-            false
-        );
-
-
-        // Save logged-in user
-
-        localStorage.setItem(
-            "loggedInUser",
-            JSON.stringify(user)
-        );
-
-
-        // Reset form
-
-        loginForm.reset();
-
-    }
-);
-
-
-// ==========================================
-// MESSAGE FUNCTION
-// ==========================================
-
-function showMessage(
-    element,
-    message,
-    isError
-) {
-
-    element.textContent = message;
-
-    if (isError) {
-
-        element.className =
-            "msg error";
-
-    } else {
-
-        element.className =
-            "msg success";
-
-    }
+/* ================= PRODUCTS ================= */
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product {
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 200px;
+    border-radius: 10px;
+    background-color: #fff;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.product:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.product h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.product p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0 15px;
 }
 
 
-// ==========================================
-// REPORT PRODUCT ISSUE
-// ==========================================
+/* ================= BUTTONS ================= */
 
-const reportProductButton =
-    document.getElementById(
-        "reportProduct"
-    );
+button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
 
-reportProductButton.addEventListener(
-    "click",
-    function () {
 
-        alert(
-            "Product issue reported successfully!"
-        );
+/* Wishlist button */
 
+.product button {
+    background-color: #28a745;
+    color: white;
+}
+
+.product button:hover {
+    background-color: #218838;
+}
+
+
+/* Customer care buttons */
+
+#reportProduct {
+    background-color: #dc3545;
+    color: white;
+    margin-right: 10px;
+}
+
+#reportOrder {
+    background-color: #fd7e14;
+    color: white;
+}
+
+#reportProduct:hover,
+#reportOrder:hover {
+    opacity: 0.9;
+}
+
+
+/* ================= LISTS ================= */
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+
+/* ================= MODAL ================= */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+
+/* Hidden class */
+
+.hidden {
+    display: none;
+}
+
+
+/* ================= MODAL CONTENT ================= */
+
+.modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+
+    width: 320px;
+    max-width: 90%;
+
+    position: relative;
+
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+
+/* Close button */
+
+.close {
+    position: absolute;
+    right: 12px;
+    top: 8px;
+
+    font-size: 28px;
+    cursor: pointer;
+
+    color: #555;
+}
+
+.close:hover {
+    color: black;
+}
+
+
+/* ================= FORM ================= */
+
+input {
+    width: 100%;
+
+    margin: 7px 0;
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+
+/* Form submit button */
+
+form button {
+    width: 100%;
+
+    background-color: #007bff;
+    color: white;
+
+    margin-top: 8px;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+
+/* ================= FORM MESSAGES ================= */
+
+.msg {
+    margin-top: 10px;
+    text-align: center;
+    min-height: 20px;
+}
+
+.msg.success {
+    color: green;
+}
+
+.msg.error {
+    color: red;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer {
+    background-color: #007bff;
+    color: white;
+
+    text-align: center;
+
+    padding: 15px;
+    margin-top: 30px;
+}
+
+footer p {
+    margin: 0;
+}
+
+
+/* ================= RESPONSIVE DESIGN ================= */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 15px;
     }
-);
 
-
-// ==========================================
-// REPORT ORDER ISSUE
-// ==========================================
-
-const reportOrderButton =
-    document.getElementById(
-        "reportOrder"
-    );
-
-reportOrderButton.addEventListener(
-    "click",
-    function () {
-
-        alert(
-            "Order issue reported successfully!"
-        );
-
+    header h1 {
+        font-size: 24px;
     }
-);
 
+    nav {
+        flex-direction: column;
+        gap: 3px;
+    }
 
-// ==========================================
-// INITIALIZE APPLICATION
-// ==========================================
+    nav a,
+    nav button {
+        font-size: 14px;
+    }
 
-renderProducts();
+    section {
+        margin: 10px;
+        padding: 18px;
+    }
 
-renderWishlist();
+    .product-container {
+        justify-content: center;
+    }
 
-renderOrders();
+    .product {
+        width: 100%;
+        max-width: 280px;
+    }
 
-renderReviews();
+    #reportProduct,
+    #reportOrder {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+Now your 3 files are consistent:
+
+E-Commerce-Portal/
+├── index.html
+├── app.css
+└── app.js
+
+Just open "index.html" and test Register → Login → Products → Wishlist → Orders → Reviews.
