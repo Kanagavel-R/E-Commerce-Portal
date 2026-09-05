@@ -40,13 +40,25 @@ E-Commerce-Portal/
     └── orders-wishlist-reviews.png
 ```
 
+## 📸 Project Screenshots
+
+### 🏠 Home & Products
+
 ![Home and Products](screenshots/home-products.jpg)
+
+### 🛟 Customer Care, Contact Us & About Us
 
 ![Customer Care, Contact Us and About Us](screenshots/customer-care-contact-about.png)
 
+### 🔐 Login
+
 ![Login](screenshots/login.png)
 
+### 📝 Register
+
 ![Register](screenshots/register.png)
+
+### 📦 Orders, Wishlist & Reviews
 
 ![Orders, Wishlist and Reviews](screenshots/orders-wishlist-reviews.png)
 
@@ -87,4 +99,5 @@ B.Tech Information Technology Student
 ## 📄 License
 
 This project is created for **educational and portfolio purposes**.
+
 
