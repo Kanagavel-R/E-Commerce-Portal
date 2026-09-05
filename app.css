@@ -1,117 +1,798 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background-color: black;
+// ==========================================
+// E-COMMERCE PORTAL - app.js
+// ==========================================
+
+
+// ==========================================
+// PRODUCT DATA
+// ==========================================
+
+const products = [
+    {
+        id: 1,
+        name: "T-Shirt",
+        price: 499
+    },
+    {
+        id: 2,
+        name: "Headphones",
+        price: 999
+    },
+    {
+        id: 3,
+        name: "Smart Watch",
+        price: 1999
+    },
+    {
+        id: 4,
+        name: "Shoes",
+        price: 1499
+    }
+];
+
+
+// ==========================================
+// ORDER DATA
+// ==========================================
+
+const orders = [
+    {
+        id: 101,
+        items: ["T-Shirt"],
+        status: "Delivered"
+    },
+    {
+        id: 102,
+        items: ["Headphones"],
+        status: "Pending"
+    }
+];
+
+
+// ==========================================
+// WISHLIST DATA
+// ==========================================
+
+let wishlist = JSON.parse(
+    localStorage.getItem("wishlist")
+) || [];
+
+
+// ==========================================
+// REVIEW DATA
+// ==========================================
+
+const reviews = [
+    {
+        prodId: 1,
+        user: "Kumar",
+        text: "Great quality product!",
+        rating: 5
+    }
+];
+
+
+// ==========================================
+// GET HTML ELEMENTS
+// ==========================================
+
+const productList = document.getElementById(
+    "productList"
+);
+
+const ordersList = document.getElementById(
+    "ordersList"
+);
+
+const wishlistElement = document.getElementById(
+    "wishlist"
+);
+
+const reviewsElement = document.getElementById(
+    "reviews"
+);
+
+
+// ==========================================
+// PRODUCT RENDERING
+// ==========================================
+
+function renderProducts() {
+
+    productList.innerHTML = "";
+
+    products.forEach(product => {
+
+        const productDiv =
+            document.createElement("div");
+
+        productDiv.className = "product";
+
+        productDiv.innerHTML = `
+            <h4>${product.name}</h4>
+
+            <p>₹${product.price}</p>
+
+            <button class="wishlist-button">
+                Add to Wishlist
+            </button>
+        `;
+
+        const wishlistButton =
+            productDiv.querySelector(
+                ".wishlist-button"
+            );
+
+        wishlistButton.addEventListener(
+            "click",
+            function () {
+
+                addToWishlist(product);
+
+            }
+        );
+
+        productList.appendChild(productDiv);
+
+    });
 }
 
-header {
-  background-color: #007bff;
-  color: white;
-  padding: 15px;
-  text-align: center;
+
+// ==========================================
+// ADD PRODUCT TO WISHLIST
+// ==========================================
+
+function addToWishlist(product) {
+
+    const alreadyAdded = wishlist.some(
+        item => item.id === product.id
+    );
+
+    if (alreadyAdded) {
+
+        alert(
+            "This product is already in your wishlist!"
+        );
+
+        return;
+    }
+
+    wishlist.push(product);
+
+    localStorage.setItem(
+        "wishlist",
+        JSON.stringify(wishlist)
+    );
+
+    renderWishlist();
+
+    alert(
+        product.name + " added to wishlist!"
+    );
 }
 
-nav a, nav button {
-  color:white;
-  margin: 0 10px;
-  text-decoration: none;
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
+
+// ==========================================
+// RENDER WISHLIST
+// ==========================================
+
+function renderWishlist() {
+
+    wishlistElement.innerHTML = "";
+
+    if (wishlist.length === 0) {
+
+        const emptyMessage =
+            document.createElement("li");
+
+        emptyMessage.textContent =
+            "Your wishlist is empty.";
+
+        wishlistElement.appendChild(
+            emptyMessage
+        );
+
+        return;
+    }
+
+    wishlist.forEach(product => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent =
+            product.name +
+            " - ₹" +
+            product.price;
+
+        wishlistElement.appendChild(li);
+
+    });
 }
 
-nav a:hover, nav button:hover {
-  text-decoration: underline;
+
+// ==========================================
+// RENDER ORDERS
+// ==========================================
+
+function renderOrders() {
+
+    ordersList.innerHTML = "";
+
+    if (orders.length === 0) {
+
+        const emptyMessage =
+            document.createElement("li");
+
+        emptyMessage.textContent =
+            "No orders available.";
+
+        ordersList.appendChild(
+            emptyMessage
+        );
+
+        return;
+    }
+
+    orders.forEach(order => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent =
+            "#" +
+            order.id +
+            " - " +
+            order.items.join(", ") +
+            " (" +
+            order.status +
+            ")";
+
+        ordersList.appendChild(li);
+
+    });
 }
 
-section {
-  background: red;
-  padding: 20px;
-  margin: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+// ==========================================
+// RENDER REVIEWS
+// ==========================================
+
+function renderReviews() {
+
+    reviewsElement.innerHTML = "";
+
+    if (reviews.length === 0) {
+
+        const emptyMessage =
+            document.createElement("li");
+
+        emptyMessage.textContent =
+            "No reviews available.";
+
+        reviewsElement.appendChild(
+            emptyMessage
+        );
+
+        return;
+    }
+
+    reviews.forEach(review => {
+
+        const product =
+            products.find(
+                p => p.id === review.prodId
+            );
+
+        const li =
+            document.createElement("li");
+
+        if (product) {
+
+            li.textContent =
+                review.user +
+                " on " +
+                product.name +
+                ': "' +
+                review.text +
+                '" (' +
+                review.rating +
+                "/5)";
+
+        } else {
+
+            li.textContent =
+                review.user +
+                ': "' +
+                review.text +
+                '" (' +
+                review.rating +
+                "/5)";
+
+        }
+
+        reviewsElement.appendChild(li);
+
+    });
 }
 
-.product-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+
+// ==========================================
+// MODAL ELEMENTS
+// ==========================================
+
+const modal =
+    document.getElementById("modal");
+
+const closeModal =
+    document.getElementById("closeModal");
+
+const loginButton =
+    document.getElementById("loginBtn");
+
+const registerButton =
+    document.getElementById("registerBtn");
+
+const loginFormBlock =
+    document.getElementById("loginForm");
+
+const registerFormBlock =
+    document.getElementById("registerForm");
+
+
+// ==========================================
+// OPEN LOGIN MODAL
+// ==========================================
+
+loginButton.addEventListener(
+    "click",
+    function () {
+
+        modal.classList.remove("hidden");
+
+        loginFormBlock.classList.remove(
+            "hidden"
+        );
+
+        registerFormBlock.classList.add(
+            "hidden"
+        );
+
+        document.getElementById(
+            "logMsg"
+        ).textContent = "";
+
+        document.getElementById(
+            "regMsg"
+        ).textContent = "";
+
+    }
+);
+
+
+// ==========================================
+// OPEN REGISTER MODAL
+// ==========================================
+
+registerButton.addEventListener(
+    "click",
+    function () {
+
+        modal.classList.remove("hidden");
+
+        registerFormBlock.classList.remove(
+            "hidden"
+        );
+
+        loginFormBlock.classList.add(
+            "hidden"
+        );
+
+        document.getElementById(
+            "logMsg"
+        ).textContent = "";
+
+        document.getElementById(
+            "regMsg"
+        ).textContent = "";
+
+    }
+);
+
+
+// ==========================================
+// CLOSE MODAL
+// ==========================================
+
+closeModal.addEventListener(
+    "click",
+    function () {
+
+        modal.classList.add("hidden");
+
+    }
+);
+
+
+// ==========================================
+// CLOSE MODAL WHEN CLICKING OUTSIDE
+// ==========================================
+
+window.addEventListener(
+    "click",
+    function (event) {
+
+        if (event.target === modal) {
+
+            modal.classList.add("hidden");
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// REGISTRATION
+// ==========================================
+
+const registerForm =
+    document.getElementById("regForm");
+
+const registerMessage =
+    document.getElementById("regMsg");
+
+
+registerForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+
+        // Get form values
+
+        const formData =
+            new FormData(registerForm);
+
+        const fullname =
+            formData.get("fullname").trim();
+
+        const email =
+            formData
+                .get("email")
+                .trim()
+                .toLowerCase();
+
+        const password =
+            formData.get("password").trim();
+
+        const phone =
+            formData.get("phone").trim();
+
+
+        // ==================================
+        // VALIDATE FULL NAME
+        // ==================================
+
+        if (fullname.length < 3) {
+
+            showMessage(
+                registerMessage,
+                "Full name must be at least 3 characters.",
+                true
+            );
+
+            return;
+        }
+
+
+        // ==================================
+        // VALIDATE EMAIL
+        // ==================================
+
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+
+            showMessage(
+                registerMessage,
+                "Enter a valid email address.",
+                true
+            );
+
+            return;
+        }
+
+
+        // ==================================
+        // VALIDATE PASSWORD
+        // ==================================
+
+        if (password.length < 6) {
+
+            showMessage(
+                registerMessage,
+                "Password must be at least 6 characters.",
+                true
+            );
+
+            return;
+        }
+
+
+        // ==================================
+        // VALIDATE PHONE
+        // ==================================
+
+        const phonePattern =
+            /^[0-9]{10}$/;
+
+        if (!phonePattern.test(phone)) {
+
+            showMessage(
+                registerMessage,
+                "Phone number must be exactly 10 digits.",
+                true
+            );
+
+            return;
+        }
+
+
+        // ==================================
+        // GET USERS
+        // ==================================
+
+        let users = JSON.parse(
+            localStorage.getItem("users")
+        ) || [];
+
+
+        // ==================================
+        // CHECK EXISTING EMAIL
+        // ==================================
+
+        const existingUser =
+            users.find(
+                user => user.email === email
+            );
+
+        if (existingUser) {
+
+            showMessage(
+                registerMessage,
+                "This email is already registered.",
+                true
+            );
+
+            return;
+        }
+
+
+        // ==================================
+        // CREATE USER
+        // ==================================
+
+        const newUser = {
+
+            fullname: fullname,
+
+            email: email,
+
+            password: password,
+
+            phone: phone
+
+        };
+
+
+        // Add user
+
+        users.push(newUser);
+
+
+        // Save users
+
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
+
+
+        // Success message
+
+        showMessage(
+            registerMessage,
+            "Registration successful!",
+            false
+        );
+
+
+        // Reset form
+
+        registerForm.reset();
+
+    }
+);
+
+
+// ==========================================
+// LOGIN
+// ==========================================
+
+const loginForm =
+    document.getElementById("logForm");
+
+const loginMessage =
+    document.getElementById("logMsg");
+
+
+loginForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+
+        // Get form values
+
+        const formData =
+            new FormData(loginForm);
+
+        const email =
+            formData
+                .get("email")
+                .trim()
+                .toLowerCase();
+
+        const password =
+            formData
+                .get("password")
+                .trim();
+
+
+        // ==================================
+        // GET USERS
+        // ==================================
+
+        const users = JSON.parse(
+            localStorage.getItem("users")
+        ) || [];
+
+
+        // ==================================
+        // FIND USER
+        // ==================================
+
+        const user =
+            users.find(
+                account =>
+                    account.email === email &&
+                    account.password === password
+            );
+
+
+        // ==================================
+        // LOGIN FAILED
+        // ==================================
+
+        if (!user) {
+
+            showMessage(
+                loginMessage,
+                "Invalid email or password.",
+                true
+            );
+
+            return;
+        }
+
+
+        // ==================================
+        // LOGIN SUCCESS
+        // ==================================
+
+        showMessage(
+            loginMessage,
+            "Welcome, " + user.fullname + "!",
+            false
+        );
+
+
+        // Save logged-in user
+
+        localStorage.setItem(
+            "loggedInUser",
+            JSON.stringify(user)
+        );
+
+
+        // Reset form
+
+        loginForm.reset();
+
+    }
+);
+
+
+// ==========================================
+// MESSAGE FUNCTION
+// ==========================================
+
+function showMessage(
+    element,
+    message,
+    isError
+) {
+
+    element.textContent = message;
+
+    if (isError) {
+
+        element.className =
+            "msg error";
+
+    } else {
+
+        element.className =
+            "msg success";
+
+    }
 }
 
-.product {
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 180px;
-  border-radius: 8px;
-  background-color:yellow;
-  text-align: center;
-}
 
-.product button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+// ==========================================
+// REPORT PRODUCT ISSUE
+// ==========================================
 
-.product button:hover {
-  background-color: #218838;
-}
+const reportProductButton =
+    document.getElementById(
+        "reportProduct"
+    );
 
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+reportProductButton.addEventListener(
+    "click",
+    function () {
 
-.hidden {
-  display: none;
-}
+        alert(
+            "Product issue reported successfully!"
+        );
 
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  position: relative;
-}
+    }
+);
 
-.close {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-size: 22px;
-  cursor: pointer;
-}
 
-input {
-  width: 100%;
-  margin: 5px 0;
-  padding: 8px;
-}
+// ==========================================
+// REPORT ORDER ISSUE
+// ==========================================
 
-button {
-  padding: 8px 12px;
-}
+const reportOrderButton =
+    document.getElementById(
+        "reportOrder"
+    );
 
-.msg {
-  margin-top: 10px;
-  color: green;
-}
+reportOrderButton.addEventListener(
+    "click",
+    function () {
 
-.msg.error {
-  color: red;
-}
+        alert(
+            "Order issue reported successfully!"
+        );
 
-footer {
-  background-color: #007bff;
-  color: white;
-  text-align: center;
-  padding: 10px;
-}
+    }
+);
+
+
+// ==========================================
+// INITIALIZE APPLICATION
+// ==========================================
+
+renderProducts();
+
+renderWishlist();
+
+renderOrders();
+
+renderReviews();
